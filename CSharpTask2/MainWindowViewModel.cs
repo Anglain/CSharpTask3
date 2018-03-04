@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -114,6 +115,11 @@ namespace CSharpTask2
                         throw new IllegalDateException("Your birth date is in the future!");
                     }
 
+                    if (!new EmailAddressAttribute().IsValid(Email))
+                    {
+                        throw new IllegalEmailException("An email address you entered is invalid!\n" + Email);
+                    }
+
                     _person = new Person(Name, Surname, Email, BirthDateTime);
 
                     if (_person.IsBirthday)
@@ -122,6 +128,10 @@ namespace CSharpTask2
                     }
                 }
                 catch (IllegalDateException ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Exception occured!");
+                }
+                catch (IllegalEmailException ex)
                 {
                     MessageBox.Show(ex.ToString(), "Exception occured!");
                 }

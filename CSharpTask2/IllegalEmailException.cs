@@ -28,7 +28,7 @@ namespace CSharpTask2
 
         public override string ToString()
         {
-            return base.ToString() + "\nIllegal email exception!\n" + _trace;
+            return "\nIllegal email exception!\n" + _trace;
         }
     }
 }

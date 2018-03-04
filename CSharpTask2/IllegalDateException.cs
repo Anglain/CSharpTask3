@@ -24,7 +24,7 @@ namespace CSharpTask2
 
         public override string ToString()
         {
-            return base.ToString() + "\nIllegal date exception!\n" + _trace;
+            return "\nIllegal date exception!\n" + _trace;
         }
     }
 }
