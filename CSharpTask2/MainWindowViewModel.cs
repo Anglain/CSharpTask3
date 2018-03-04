@@ -27,9 +27,9 @@ namespace CSharpTask2
             get
             {
                 return _proceedCommand ?? (_proceedCommand = new RelayCommand(ProceedImplementation,
-                           o => !string.IsNullOrWhiteSpace(_name) &&
+                            o => !string.IsNullOrWhiteSpace(_name) &&
                                 !string.IsNullOrWhiteSpace(_surname) &&
-                                !string.IsNullOrWhiteSpace(_email) && 
+                                !string.IsNullOrWhiteSpace(_email) &&
                                 _birthDateTime != DateTime.MinValue));
             }
         }
@@ -103,17 +103,27 @@ namespace CSharpTask2
         {
             await Task.Run(() =>
             {
-                if (DateTime.Now.Year - _birthDateTime.Year >= 135 || DateTime.Now.Year - _birthDateTime.Year < 0)
+                try
                 {
-                    MessageBox.Show("Input correct birth day!", "ERROR");
-                    _birthDateTime = DateTime.MinValue;
+                    if (DateTime.Now.Year - _birthDateTime.Year >= 135)
+                    {
+                        throw new IllegalDateException("Your birth date is too far away in the past!");
+                    }
+                    else if (DateTime.Now.Year - _birthDateTime.Year < 0)
+                    {
+                        throw new IllegalDateException("Your birth date is in the future!");
+                    }
+
+                    _person = new Person(Name, Surname, Email, BirthDateTime);
+
+                    if (_person.IsBirthday)
+                    {
+                        MessageBox.Show("Happy birthday!", "Birthday greetings!");
+                    }
                 }
-
-                _person = new Person(Name, Surname, Email, BirthDateTime);
-
-                if (_person.IsBirthday)
+                catch (IllegalDateException ex)
                 {
-                    MessageBox.Show("Happy birthday!", "Birthday greetings!");
+                    MessageBox.Show(ex.ToString(), "Exception occured!");
                 }
 
                 Thread.Sleep(200);
